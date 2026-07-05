@@ -429,7 +429,7 @@ a:hover { color: var(--dlg-color-accent-deep); text-decoration: underline; text-
 .dlg-feature-card:hover .dlg-feature-card__cta { gap: var(--dlg-space-3); color: var(--dlg-color-accent-deep); }
 
 [data-bs-theme="dark"] .dlg-feature-card__title { color: var(--dlg-color-accent); }
-[data-bs-theme="dark"] .dlg-feature-card__icon { background: var(--dlg-color-accent-soft); color: var(--dlg-color-primary); }
+[data-bs-theme="dark"] .dlg-feature-card__icon { background: var(--dlg-color-accent-soft); color: var(--dlg-color-accent-deep); }
 [data-bs-theme="dark"] .dlg-feature-card__cta { color: var(--dlg-color-accent); }
 
 /* =================== 特性說明 =================== */
@@ -964,6 +964,10 @@ body[data-active-mode="extract"] .dlg-extract-panel[data-only-for-mode="extract"
 .dlg-pane__action:hover {
   background: var(--dlg-color-primary);
   color: #fff;
+}
+[data-bs-theme="dark"] .dlg-pane__action:hover {
+  background: var(--dlg-color-accent);
+  color: var(--dlg-color-primary-deep);
 }
 
 .dlg-pane__body {

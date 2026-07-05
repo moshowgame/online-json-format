@@ -96,12 +96,14 @@
 
 /* === 深色主題覆蓋 === */
 [data-bs-theme="dark"] {
-  --dlg-color-primary:        #E8C77A;
-  --dlg-color-primary-deep:   #F2D58E;
-  --dlg-color-primary-soft:   #C8A24B;
-  --dlg-color-accent:         #C8A24B;
-  --dlg-color-accent-deep:    #E5CC85;
-  --dlg-color-accent-soft:    #8E6E2C;
+  /* 主色改為深色，避免頂欄/頁腳整片金色 */
+  --dlg-color-primary:        #1A1F2A;
+  --dlg-color-primary-deep:   #0E141C;
+  --dlg-color-primary-soft:   #2A3441;
+  /* 金色去黃化：更沉穩的琥珀金，少土黃感 */
+  --dlg-color-accent:         #C9A961;
+  --dlg-color-accent-deep:    #D4B574;
+  --dlg-color-accent-soft:    #6B5A2A;
 
   --dlg-color-text:           #E6E9EE;
   --dlg-color-text-soft:      #A8B0BB;
