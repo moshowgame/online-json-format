@@ -1,0 +1,26 @@
+{
+  "reportId": "RPT-2026-07-04-001",
+  "generatedAt": "2026-07-04T08:30:00Z",
+  "metadata": {
+    "source": "core-banking",
+    "version": "1.0.0"
+  },
+  "accounts": [
+    { "accountNumber": "ACC-100001", "accountLocation": "CN", "balance": 12500.5,  "status": "ACTIVE", "type": "SAVINGS" },
+    { "accountNumber": "ACC-100002", "accountLocation": "US", "balance": 3200.0,   "status": "ACTIVE", "type": "CHECKING" },
+    { "accountNumber": "ACC-100003", "accountLocation": "CN", "balance": 8800.75,  "status": "FROZEN", "type": "SAVINGS" },
+    { "accountNumber": "ACC-100004", "accountLocation": "CN", "balance": 560.0,    "status": "ACTIVE", "type": "SAVINGS" },
+    { "accountNumber": "ACC-100005", "accountLocation": "HK", "balance": 9999.99,  "status": "ACTIVE", "type": "SAVINGS" },
+    { "accountNumber": "ACC-100001", "accountLocation": "CN", "balance": 12500.5,  "status": "ACTIVE", "type": "SAVINGS" },
+    { "accountNumber": "ACC-100006", "accountLocation": "CN", "balance": 0,        "status": "CLOSED", "type": "SAVINGS" },
+    { "accountNumber": "ACC-100007", "accountLocation": "JP", "balance": 4500,    "status": "ACTIVE", "type": "CHECKING" },
+    { "accountNumber": "ACC-100008", "accountLocation": "CN", "balance": 2400.0,  "status": "ACTIVE", "type": "SAVINGS" },
+    { "accountNumber": "ACC-100009", "accountLocation": "SG", "balance": 7800.0,  "status": "ACTIVE", "type": "SAVINGS" }
+  ],
+  "totals": {
+    "activeCount": 8,
+    "frozenCount": 1,
+    "closedCount": 1,
+    "totalBalance": 65760.24
+  }
+}

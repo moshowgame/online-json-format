@@ -1,0 +1,123 @@
+/* =========================================================
+   大狼狗 JSON 工具箱 — 設計 Token
+   風格：莊重、正式的政府/協會類企業站
+   ========================================================= */
+
+:root {
+  /* === 主色 === */
+  --dlg-color-primary:        #0B2A4A;  /* 深藍：標題、頂欄 */
+  --dlg-color-primary-deep:   #061a30;
+  --dlg-color-primary-soft:   #163E6E;
+  --dlg-color-accent:         #C8A24B;  /* 點睛金：按鈕、強調 */
+  --dlg-color-accent-deep:    #A38235;
+  --dlg-color-accent-soft:    #E5CC85;
+
+  /* === 輔色 === */
+  --dlg-color-text:           #1A1F2A;
+  --dlg-color-text-soft:      #5B6770;
+  --dlg-color-text-muted:     #8A95A1;
+  --dlg-color-bg:             #F5F6F8;
+  --dlg-color-bg-card:        #FFFFFF;
+  --dlg-color-bg-elevated:    #FAFBFC;
+  --dlg-color-border:         #DCE1E8;
+  --dlg-color-border-strong:  #B8C0CC;
+
+  /* === 狀態色 === */
+  --dlg-color-success:        #1E7A3C;
+  --dlg-color-success-soft:   #E3F2E8;
+  --dlg-color-danger:         #B3261E;
+  --dlg-color-danger-soft:    #FBE8E7;
+  --dlg-color-warning:        #B8860B;
+  --dlg-color-warning-soft:   #FCF3DC;
+  --dlg-color-info:           #1B5E9C;
+  --dlg-color-info-soft:      #E1ECF7;
+
+  /* === 字體 === */
+  --dlg-font-zh-title:  "Noto Serif SC", "Source Serif 4", "Songti TC", "PMingLiU", serif;
+  --dlg-font-zh-body:   "Noto Sans SC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --dlg-font-en-title:  "Source Serif 4", "Noto Serif SC", Georgia, serif;
+  --dlg-font-mono:      "JetBrains Mono", "Cascadia Code", Consolas, "Source Code Pro", monospace;
+
+  /* === 字號 === */
+  --dlg-fs-12: 0.75rem;
+  --dlg-fs-13: 0.8125rem;
+  --dlg-fs-14: 0.875rem;
+  --dlg-fs-15: 0.9375rem;
+  --dlg-fs-16: 1rem;
+  --dlg-fs-18: 1.125rem;
+  --dlg-fs-20: 1.25rem;
+  --dlg-fs-24: 1.5rem;
+  --dlg-fs-28: 1.75rem;
+  --dlg-fs-32: 2rem;
+  --dlg-fs-40: 2.5rem;
+  --dlg-fs-52: 3.25rem;
+
+  /* === 行高 === */
+  --dlg-lh-tight: 1.25;
+  --dlg-lh-normal: 1.5;
+  --dlg-lh-loose: 1.7;
+
+  /* === 圓角 === */
+  --dlg-radius-xs: 2px;
+  --dlg-radius-sm: 4px;
+  --dlg-radius-md: 6px;
+  --dlg-radius-lg: 10px;
+  --dlg-radius-pill: 999px;
+
+  /* === 間距（4 的倍數） === */
+  --dlg-space-1: 4px;
+  --dlg-space-2: 8px;
+  --dlg-space-3: 12px;
+  --dlg-space-4: 16px;
+  --dlg-space-5: 20px;
+  --dlg-space-6: 24px;
+  --dlg-space-8: 32px;
+  --dlg-space-10: 40px;
+  --dlg-space-12: 48px;
+  --dlg-space-16: 64px;
+  --dlg-space-20: 80px;
+
+  /* === 陰影 === */
+  --dlg-shadow-sm:  0 1px 2px rgba(11, 42, 74, 0.06), 0 1px 1px rgba(11, 42, 74, 0.04);
+  --dlg-shadow-md:  0 4px 12px rgba(11, 42, 74, 0.08), 0 2px 4px rgba(11, 42, 74, 0.04);
+  --dlg-shadow-lg:  0 12px 32px rgba(11, 42, 74, 0.12), 0 4px 8px rgba(11, 42, 74, 0.06);
+  --dlg-shadow-gold: 0 6px 18px rgba(200, 162, 75, 0.25);
+
+  /* === 過渡 === */
+  --dlg-ease: cubic-bezier(.2,.6,.2,1);
+  --dlg-dur-fast: 150ms;
+  --dlg-dur:      220ms;
+  --dlg-dur-slow: 380ms;
+
+  /* === 佈局 === */
+  --dlg-topbar-h: 64px;
+  --dlg-container-max: 1200px;
+}
+
+/* === 深色主題覆蓋 === */
+[data-bs-theme="dark"] {
+  --dlg-color-primary:        #E8C77A;
+  --dlg-color-primary-deep:   #F2D58E;
+  --dlg-color-primary-soft:   #C8A24B;
+  --dlg-color-accent:         #C8A24B;
+  --dlg-color-accent-deep:    #E5CC85;
+  --dlg-color-accent-soft:    #8E6E2C;
+
+  --dlg-color-text:           #E6E9EE;
+  --dlg-color-text-soft:      #A8B0BB;
+  --dlg-color-text-muted:     #6E7886;
+  --dlg-color-bg:             #0E141C;
+  --dlg-color-bg-card:        #161E29;
+  --dlg-color-bg-elevated:    #1C2532;
+  --dlg-color-border:         #2A3441;
+  --dlg-color-border-strong:  #3A4756;
+
+  --dlg-color-success-soft:   #1A2D22;
+  --dlg-color-danger-soft:    #2A1817;
+  --dlg-color-warning-soft:   #2A2210;
+  --dlg-color-info-soft:      #122638;
+
+  --dlg-shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
+  --dlg-shadow-md:  0 4px 12px rgba(0, 0, 0, 0.5);
+  --dlg-shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.6);
+}

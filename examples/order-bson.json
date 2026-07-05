@@ -1,0 +1,24 @@
+{
+  "_id": { "$oid": "668b6a0a3b1f4a2e88c8d0e1" },
+  "orderNo": "SO-20260704-0001",
+  "customer": {
+    "name": "張大狼狗",
+    "vipLevel": 3,
+    "email": "dalang@example.com"
+  },
+  "amount": { "$numberDecimal": "1234.56" },
+  "createdAt": { "$date": "2026-07-04T08:30:00.000Z" },
+  "updatedAt": { "$date": "2026-07-04T09:15:42.123Z" },
+  "items": [
+    { "sku": "DLG-TEE-001", "qty": 2, "price": { "$numberInt": "199" } },
+    { "sku": "DLG-MUG-007", "qty": 1, "price": { "$numberDecimal": "59.50" } },
+    { "sku": "DLG-STK-014", "qty": 5, "price": { "$numberDecimal": "12.00" } }
+  ],
+  "tags": ["vip", "fast-shipping", "gift"],
+  "shipping": {
+    "address": { "city": "深圳市", "country": "CN" },
+    "trackingNo": "SF1234567890"
+  },
+  "remark": null,
+  "version": { "$numberLong": "1700000000000" }
+}

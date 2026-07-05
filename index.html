@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大狼狗 JSON 格式化 | Moshow</title>
+  <meta name="description" content="大狼狗 JSON 格式化 — JSON/BSON 校驗格式化、壓縮、按條件提取元素，一頁完成。純前端、零上傳、零追蹤，作者 Moshow。">
+  <meta name="keywords" content="JSON,BSON,MongoDB,JSON格式化,JSON校驗,JSON壓縮,BSON格式化,提取元素,在線工具,Moshow,大狼狗">
+  <meta name="author" content="Moshow">
+
+  <meta property="og:title" content="大狼狗 JSON 格式化">
+  <meta property="og:description" content="JSON/BSON 校驗格式化、壓縮、按條件提取元素 — 一頁完成。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:wght@500;700&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <link id="hljs-light" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+  <link id="hljs-dark" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css" disabled>
+
+  <link rel="stylesheet" href="assets/css/token.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <a class="dlg-skip" href="#dlg-main">跳到主內容</a>
+
+  <!-- ================= 頂部導航 ================= -->
+  <header class="dlg-topbar" role="banner">
+    <div class="dlg-topbar__inner container-xxl">
+      <a class="dlg-brand" href="#dlg-main" aria-label="大狼狗 JSON 格式化 首頁">
+        <img class="dlg-brand__logo" src="assets/img/logo.svg" alt="">
+        <span class="dlg-brand__text">
+          <span class="dlg-brand__zh">大狼狗JSON格式化</span>
+          <span class="dlg-brand__slogan">Moshow · JSON Formatter Tool</span>
+        </span>
+      </a>
+
+      <nav class="dlg-nav" aria-label="主導航">
+        <a class="dlg-nav__link" href="#dlg-section-tool"><i class="bi bi-tools"></i> 工具</a>
+        <a class="dlg-nav__link" href="#dlg-section-about"><i class="bi bi-info-circle"></i> 關於</a>
+      </nav>
+
+      <div class="dlg-topbar__tools">
+        <button id="dlg-theme-toggle" class="dlg-iconbtn" type="button" aria-label="切換深淺色主題" title="切換主題 (Ctrl+/)">
+          <i class="bi bi-moon-stars"></i>
+        </button>
+      </div>
+
+      <button class="dlg-burger" type="button" aria-label="打開導航" aria-expanded="false" id="dlg-burger">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= 主內容（單頁：所有功能常駐） ================= -->
+  <main id="dlg-main" class="dlg-main" role="main">
+    <div class="dlg-page">
+
+      <!-- ========== 區塊 1：統一工具（校驗・壓縮・提取） ========== -->
+      <section id="dlg-section-tool" class="dlg-section dlg-section--first">
+        <div class="dlg-section__head">
+          <div class="dlg-section__titlebar">
+            <span class="dlg-section__num">01</span>
+            <h2 class="dlg-section__title">校驗・格式化・提取</h2>
+          </div>
+          <p class="dlg-section__desc">
+            選擇「操作」決定對輸入做什麼，<b>格式化</b>校驗並美化、<b>壓縮</b>移除多餘空白、<b>提取</b>按路徑與條件挑出目標元素。輸入與輸出框共享，模式切換即換行為。
+            <kbd>Ctrl</kbd>+<kbd>Enter</kbd> 執行，<kbd>Ctrl</kbd>+<kbd>K</kbd> 清空。
+          </p>
+        </div>
+
+        <!-- 工具條（粘性） -->
+        <div class="dlg-tool__bar dlg-tool__bar--sticky">
+          <!-- 操作模式 -->
+          <div class="dlg-tool__group">
+            <span class="dlg-tool__label">操作</span>
+            <div class="dlg-seg" data-bind="mode" role="radiogroup" aria-label="操作模式">
+              <button class="dlg-seg__btn is-active" data-val="format" role="radio" aria-checked="true">
+                <i class="bi bi-magic"></i> 格式化
+              </button>
+              <button class="dlg-seg__btn" data-val="minify" role="radio" aria-checked="false">
+                <i class="bi bi-arrows-collapse"></i> 壓縮
+              </button>
+              <button class="dlg-seg__btn" data-val="extract" role="radio" aria-checked="false">
+                <i class="bi bi-funnel"></i> 提取
+              </button>
+            </div>
+          </div>
+
+          <!-- 輸入格式 -->
+          <div class="dlg-tool__group">
+            <span class="dlg-tool__label">輸入格式</span>
+            <div class="dlg-radio" role="radiogroup" aria-label="輸入格式">
+              <label class="dlg-radio__item">
+                <input type="radio" name="dlg-format" value="json" checked>
+                <span class="dlg-radio__face"><i class="bi bi-braces"></i> JSON</span>
+              </label>
+              <label class="dlg-radio__item">
+                <input type="radio" name="dlg-format" value="bson">
+                <span class="dlg-radio__face"><i class="bi bi-database"></i> BSON</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 格式化（JSON）選項 -->
+          <div class="dlg-tool__group" data-only-for-mode="format" data-only-for-format="json">
+            <span class="dlg-tool__label">縮進</span>
+            <div class="dlg-seg" data-bind="indent">
+              <button class="dlg-seg__btn is-active" data-val="2">2 空格</button>
+              <button class="dlg-seg__btn" data-val="4">4 空格</button>
+              <button class="dlg-seg__btn" data-val="tab">Tab</button>
+            </div>
+          </div>
+          <div class="dlg-tool__group" data-only-for-mode="format" data-only-for-format="json">
+            <label class="dlg-form-check"><input type="checkbox" data-bind="sortKeys"> 按鍵名排序</label>
+            <label class="dlg-form-check"><input type="checkbox" data-bind="escapeUnicode"> 轉義 Unicode</label>
+          </div>
+
+          <!-- 壓縮（JSON）選項 -->
+          <div class="dlg-tool__group" data-only-for-mode="minify" data-only-for-format="json">
+            <span class="dlg-pane__hint">移除所有空白與換行，輸出單行 JSON</span>
+          </div>
+
+          <!-- BSON 通用選項 -->
+          <div class="dlg-tool__group" data-only-for-format="bson">
+            <span class="dlg-tool__label">BSON 模式</span>
+            <div class="dlg-seg" data-bind="bson-mode">
+              <button class="dlg-seg__btn is-active" data-val="auto">自動</button>
+              <button class="dlg-seg__btn" data-val="extended-json">Extended JSON</button>
+              <button class="dlg-seg__btn" data-val="hex">Hex</button>
+              <button class="dlg-seg__btn" data-val="base64">Base64</button>
+            </div>
+          </div>
+          <div class="dlg-tool__group" data-only-for-format="bson">
+            <span class="dlg-tool__label">縮進</span>
+            <div class="dlg-seg" data-bind="bson-indent">
+              <button class="dlg-seg__btn is-active" data-val="2">2 空格</button>
+              <button class="dlg-seg__btn" data-val="4">4 空格</button>
+              <button class="dlg-seg__btn" data-val="tab">Tab</button>
+            </div>
+          </div>
+
+          <!-- 提取選項（精簡到工具條：標量 / 去重） -->
+          <div class="dlg-tool__group" data-only-for-mode="extract">
+            <label class="dlg-form-check"><input type="checkbox" id="ex-scalar" checked> 僅取標量</label>
+            <label class="dlg-form-check"><input type="checkbox" id="ex-distinct" checked> 結果去重</label>
+          </div>
+
+          <!-- 主操作按鈕 -->
+          <div class="dlg-tool__group dlg-tool__group--actions">
+            <button class="dlg-btn dlg-btn--primary dlg-btn--sm" data-act="run" id="btn-run">
+              <i class="bi bi-play-fill"></i> <span id="btn-run-label">執行</span>
+            </button>
+            <button class="dlg-btn dlg-btn--outline dlg-btn--sm" data-act="loadSample">
+              <i class="bi bi-file-earmark-text"></i> 載入示例
+            </button>
+            <button class="dlg-btn dlg-btn--outline dlg-btn--sm" data-act="clear">
+              <i class="bi bi-x-lg"></i> 清空
+            </button>
+            <!-- 提取專屬按鈕 -->
+            <button class="dlg-btn dlg-btn--outline dlg-btn--sm" data-act="copyJson" data-only-for-mode="extract">
+              <i class="bi bi-clipboard"></i> 複製 JSON 數組
+            </button>
+            <button class="dlg-btn dlg-btn--outline dlg-btn--sm" data-act="downloadCsv" data-only-for-mode="extract">
+              <i class="bi bi-filetype-csv"></i> 下載 CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- 提取專屬面板：路徑 + 條件 + 預設（僅提取模式顯示） -->
+        <div class="dlg-extract-panel" data-only-for-mode="extract" hidden>
+          <div class="dlg-field">
+            <label class="dlg-field__label">目標路徑 <span class="req">*</span></label>
+            <input class="dlg-input" id="ex-path" type="text" placeholder="例：accounts[*].accountNumber" autocomplete="off">
+            <div class="dlg-field__hint">支持 <code>a.b.c</code> 屬性、<code>a[*]</code> 數組展開、<code>a[0]</code> 索引、<code>a..b</code> 遞歸下降。</div>
+          </div>
+          <div class="dlg-field">
+            <label class="dlg-field__label">過濾條件 <span style="color:var(--dlg-color-text-muted);font-weight:400">(可選)</span></label>
+            <input class="dlg-input" id="ex-cond" type="text" placeholder='例：accountLocation == "CN"' autocomplete="off">
+            <div class="dlg-field__hint">支持 <code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&amp;&amp;</code> <code>||</code> <code>!</code>。標識符引用父對象屬性，<code>_value</code> 引用當前匹配值。</div>
+          </div>
+          <div class="dlg-advanced">
+            <span class="dlg-tool__label">常用預設：</span>
+            <span class="dlg-presets">
+              <button class="dlg-chip" data-preset='{"path":"accounts[*].accountNumber","condition":"accountLocation == \"CN\""}'>CN 賬號</button>
+              <button class="dlg-chip" data-preset='{"path":"accounts[*].status","condition":"accountLocation == \"CN\""}'>CN 賬戶狀態</button>
+              <button class="dlg-chip" data-preset='{"path":"$..balance","condition":"_value &gt; 5000"}'>大於 5000 的餘額</button>
+            </span>
+          </div>
+        </div>
+
+        <!-- 雙欄：共享輸入 / 共享輸出 -->
+        <div class="dlg-pane-grid">
+          <div class="dlg-pane" data-pane="fmt-input">
+            <div class="dlg-pane__head">
+              <div class="dlg-pane__title"><i class="bi bi-pencil-square"></i> 輸入</div>
+              <div class="dlg-pane__actions">
+                <span class="dlg-pane__hint" id="fmt-mode-hint">JSON · 格式化</span>
+              </div>
+            </div>
+            <div class="dlg-pane__body">
+              <div class="dlg-pane__gutter" data-gutter="fmt-input">1</div>
+              <textarea class="dlg-pane__editor" id="fmt-input" spellcheck="false" placeholder="粘貼 JSON 或 BSON 文本…"></textarea>
+            </div>
+          </div>
+
+          <div class="dlg-pane" data-pane="fmt-output">
+            <div class="dlg-pane__head">
+              <div class="dlg-pane__title" id="fmt-output-title">
+                <i class="bi bi-file-earmark-code"></i> <span id="fmt-output-title-text">輸出</span>
+              </div>
+              <div class="dlg-pane__actions">
+                <button class="dlg-pane__action" data-act="copy" data-target="fmt-output">
+                  <i class="bi bi-clipboard"></i> 複製
+                </button>
+                <button class="dlg-pane__action" data-act="download" data-target="fmt-output">
+                  <i class="bi bi-download"></i> 下載
+                </button>
+              </div>
+            </div>
+            <div class="dlg-pane__body">
+              <div class="dlg-pane__output" id="fmt-output" data-empty="點擊「執行」開始">
+                <div class="dlg-pane__placeholder"><i class="bi bi-arrow-left-right"></i><div>點擊「執行」開始</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BSON 類型摘要（僅 BSON 顯示） -->
+        <div id="fmt-bson-types" class="dlg-bson-types-wrap" data-only-for-format="bson" hidden>
+          <div class="dlg-bson-types__label"><i class="bi bi-tags"></i> BSON 類型摘要</div>
+          <div class="dlg-bson-types" id="fmt-bson-types-list"></div>
+        </div>
+
+        <!-- 提取詳情面板（提取模式專用，默認隱藏） -->
+        <div class="dlg-detail" id="ex-detail" data-only-for-mode="extract" hidden>
+          <div class="dlg-detail__head">
+            <div class="dlg-detail__title"><i class="bi bi-eye"></i> 元素詳情</div>
+            <button class="dlg-pane__action" data-act="closeDetail"><i class="bi bi-x-lg"></i> 關閉</button>
+          </div>
+          <div class="dlg-detail__grid">
+            <div class="dlg-detail__field">
+              <div class="dlg-detail__label">路徑</div>
+              <div class="dlg-detail__value" id="ex-detail-path"><code>—</code></div>
+            </div>
+            <div class="dlg-detail__field">
+              <div class="dlg-detail__label">當前值</div>
+              <div class="dlg-detail__value" id="ex-detail-value"><code>—</code></div>
+            </div>
+            <div class="dlg-detail__field dlg-detail__field--wide">
+              <div class="dlg-detail__label">父對象</div>
+              <div class="dlg-detail__value" id="ex-detail-parent"></div>
+            </div>
+            <div class="dlg-detail__field dlg-detail__field--wide">
+              <div class="dlg-detail__label">所有命中路徑</div>
+              <div class="dlg-detail__value" id="ex-detail-paths"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 區塊 2：關於 ========== -->
+      <section id="dlg-section-about" class="dlg-section">
+        <div class="dlg-section__head">
+          <div class="dlg-section__titlebar">
+            <span class="dlg-section__num">02</span>
+            <h2 class="dlg-section__title">關於</h2>
+          </div>
+          <p class="dlg-section__desc">輕量、安全、零干擾的瀏覽器端 JSON/BSON 工具箱。</p>
+        </div>
+
+        <div class="dlg-about">
+          <div class="dlg-prose">
+            <h3>特性</h3>
+            <ul>
+              <li><strong>一框三用</strong>：同一個輸入框支援「格式化 / 壓縮 / 提取元素」三種操作，按需切換。</li>
+              <li><strong>純前端</strong>：所有計算在瀏覽器內完成，您的數據從不離開本機。</li>
+              <li><strong>零追蹤</strong>：不集成任何分析或廣告腳本。</li>
+              <li><strong>一頁完成</strong>：所有功能並排在同一頁，無需切換視圖。</li>
+              <li><strong>BSON 友好</strong>：支持 Extended JSON、Hex、Base64 三種輸入模式，自動識別 BSON 特殊類型。</li>
+              <li><strong>鍵盤友好</strong>：<kbd>Ctrl</kbd>+<kbd>Enter</kbd> 執行、<kbd>Ctrl</kbd>+<kbd>K</kbd> 清空、<kbd>Ctrl</kbd>+<kbd>/</kbd> 切換主題。</li>
+            </ul>
+            <h3>使用流程</h3>
+            <ol>
+              <li>在工具區選擇「操作」：格式化 / 壓縮 / 提取；</li>
+              <li>粘貼 JSON 或 BSON 文本，根據操作配置對應選項（縮進、路徑、條件等）；</li>
+              <li>點擊「執行」按鈕或 <kbd>Ctrl</kbd>+<kbd>Enter</kbd>，結果顯示在右側輸出區；</li>
+              <li>提取模式下可點擊行查看完整路徑與父對象詳情，支援複製 JSON 數組或下載 CSV。</li>
+            </ol>
+            <h3>版本更新
+                <span class="dlg-badge dlg-badge--accent">v2026.07 A</span>
+            </h3>
+            <ul>
+              <li>v2026.07 A：新增 BSON 友好輸入模式，支持 Extended JSON、Hex、Base64 三種輸入模式，自動識別 BSON 特殊類型。</li>
+            </ul>
+          </div>
+
+          <aside>
+            <div class="dlg-stats">
+              <!-- <div class="dlg-stat"><span class="dlg-stat__num">3</span><span class="dlg-stat__label">核心操作</span></div> -->
+              <div class="dlg-stat"><span class="dlg-stat__num">0</span><span class="dlg-stat__label">數據上傳</span></div>
+              <div class="dlg-stat"><span class="dlg-stat__num">100%</span><span class="dlg-stat__label">純前端</span></div>
+              <!-- <div class="dlg-stat"><span class="dlg-stat__num">v1.1</span><span class="dlg-stat__label">當前版本</span></div> -->
+            </div>
+            <div class="dlg-info-card" style="margin-top:var(--dlg-space-5)">
+              <div class="dlg-info-card__title"><i class="bi bi-person-circle"></i> 關於作者</div>
+              <div class="dlg-info-card__body">
+                <strong>Moshow</strong>，一名熱愛技術與分享的 <strong>Technical Lead</strong> &amp; <strong>數據科學家</strong> &amp; <strong>SpringBoot 專家</strong>。
+                <div style="margin-top:6px"><a class="dlg-badge dlg-badge--accent" href="https://zhengkai.blog.csdn.net/" target="_blank" rel="noopener noreferrer"><i class="bi bi-award-fill"></i> CSDN 博客之星 2025 年度 TOP100</a></div>
+                <div style="margin-top:4px"><a class="dlg-badge dlg-badge--accent" href="https://github.com/moshowgame" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i> GitHub 4K stars</a></div>
+              </div>
+            </div>
+            <div class="dlg-info-card" style="margin-top:var(--dlg-space-3)">
+              <div class="dlg-info-card__title"><i class="bi bi-shield-check"></i> 隱私承諾</div>
+              <div class="dlg-info-card__body">本網站不收集任何用戶數據、不寫入 Cookie、不與第三方共享信息。</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ================= 頁腳 ================= -->
+  <footer class="dlg-footer" role="contentinfo">
+    <!-- <div class="dlg-footer__inner">
+      <div class="dlg-footer__col">
+        <div class="dlg-footer__title">大狼狗JSON格式化</div>
+        <p class="dlg-footer__desc">純前端、零上傳、零追蹤的 JSON/BSON 工具箱。打開瀏覽器即可使用，無需登錄、無需安裝。</p>
+      </div>
+      <div class="dlg-footer__col">
+        <div class="dlg-footer__title">功能</div>
+        <ul class="dlg-footer__list">
+          <li><a href="#dlg-section-tool">校驗・格式化・提取</a></li>
+        </ul>
+      </div>
+      <div class="dlg-footer__col">
+        <div class="dlg-footer__title">關於</div>
+        <ul class="dlg-footer__list">
+          <li>作者：Moshow</li>
+          <li>版本：v1.1.0</li>
+          <li><a href="#dlg-section-about">了解更多 →</a></li>
+        </ul>
+      </div>
+    </div> -->
+    <div class="dlg-footer__bottom">
+      <div class="container-xxl">
+        <span>© <span id="dlg-year"></span> Moshow · 大狼狗JSON格式化 · All Rights Reserved</span>
+        <span class="dlg-footer__socials">
+          <a class="dlg-footer__social" href="https://zhengkai.blog.csdn.net/" target="_blank" rel="noopener noreferrer" title="CSDN 博客"><i class="bi bi-pencil-square"></i></a>
+          <a class="dlg-footer__social" href="https://github.com/moshowgame" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="bi bi-github"></i></a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= Toast 容器 ================= -->
+  <div class="dlg-toast-stack" id="dlg-toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ================= Vendor JS ================= -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bson@6.7.0/lib/bson.bundle.js"></script>
+
+  <!-- ================= App JS ================= -->
+  <script src="assets/js/modules/storage.js"></script>
+  <script src="assets/js/modules/ui.js"></script>
+  <script src="assets/js/modules/json.js"></script>
+  <script src="assets/js/modules/bson.js"></script>
+  <script src="assets/js/modules/extract.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
