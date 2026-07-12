@@ -3,8 +3,24 @@
 > 一個面向開發者、數據分析師與後端工程師的 **純前端** JSON / BSON 工具箱。
 > 打開即用、零上傳、零追蹤，集成 **校驗格式化 / 壓縮 / 按條件提取** 三項核心能力。
 
-🔗 線上使用：[https://zhengkai.blog.csdn.net/](https://zhengkai.blog.csdn.net/)
+🔗 線上使用：[大狼狗JSON格式化在线工具](https://moshowgame.github.io/online-json-format/) [https://moshowgame.github.io/online-json-format/](https://moshowgame.github.io/online-json-format/)
 
+效果:
+
+| 功能 | 預覽 | 說明 |
+|:---|:---:|---|
+| 校驗格式化 | ![format](sc-format.png) | 縮進 / 排序 / 轉義 / 錯誤定位 |
+| 壓縮 | ![compress](sc-compress.png) | 單行輸出,體積最小 |
+| 提取元素 | ![extract](sc-extract.png) | 路徑 + 條件,支持去重 / 計數 / 導出 |
+
+---
+
+## 👤 作者
+
+**Moshow** — Technical Lead & 數據科學家 & SpringBoot 專家
+
+- 🏆 CSDN 博客之星 2025 年度 TOP100 — [https://zhengkai.blog.csdn.net/](https://zhengkai.blog.csdn.net/)
+- ⭐ GitHub 4K stars — [https://github.com/moshowgame](https://github.com/moshowgame)
 ---
 
 ## ✨ 特性
@@ -153,14 +169,7 @@ http-server -p 8765
 
 > 已附帶 `robots.txt` 與 `sitemap.xml`，SEO 友好。
 
----
 
-## 👤 作者
-
-**Moshow** — Technical Lead & 數據科學家 & SpringBoot 專家
-
-- 🏆 CSDN 博客之星 2025 年度 TOP100 — [https://zhengkai.blog.csdn.net/](https://zhengkai.blog.csdn.net/)
-- ⭐ GitHub 4K stars — [https://github.com/moshowgame](https://github.com/moshowgame)
 
 ---
 
