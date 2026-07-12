@@ -1119,6 +1119,114 @@ a.dlg-badge--accent:hover { background: var(--dlg-color-accent); color: var(--dl
   box-shadow: 0 0 0 3px rgba(200, 162, 75, 0.15);
 }
 
+/* ============== 輸入框後綴按鈕（路徑偵測） ============== */
+.dlg-input-wrap { position: relative; }
+.dlg-input-wrap .dlg-input { padding-right: 38px; }
+.dlg-input-suffix {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--dlg-radius-sm);
+  color: var(--dlg-color-text-muted);
+  cursor: pointer;
+  font-size: var(--dlg-fs-14);
+  transition: all var(--dlg-dur) var(--dlg-ease);
+}
+.dlg-input-suffix:hover {
+  background: var(--dlg-color-accent);
+  color: var(--dlg-color-primary-deep);
+  border-color: var(--dlg-color-accent);
+}
+.dlg-input-suffix.is-active {
+  background: var(--dlg-color-accent);
+  color: var(--dlg-color-primary-deep);
+  border-color: var(--dlg-color-accent);
+}
+
+/* ============== 自動偵測建議面板 ============== */
+.dlg-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: var(--dlg-space-2) var(--dlg-space-3);
+  background: var(--dlg-color-bg-elevated);
+  border: 1px dashed var(--dlg-color-border);
+  border-radius: var(--dlg-radius-sm);
+  animation: dlgFadeIn 180ms var(--dlg-ease) both;
+}
+.dlg-suggest[hidden] { display: none; }
+.dlg-suggest__label {
+  width: 100%;
+  font-size: var(--dlg-fs-12);
+  color: var(--dlg-color-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.dlg-suggest__label i { color: var(--dlg-color-accent-deep); }
+.dlg-suggest__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--dlg-color-bg-card);
+  border: 1px solid var(--dlg-color-border);
+  color: var(--dlg-color-text);
+  font-family: var(--dlg-font-mono);
+  font-size: var(--dlg-fs-12);
+  border-radius: var(--dlg-radius-pill);
+  cursor: pointer;
+  transition: all var(--dlg-dur) var(--dlg-ease);
+  max-width: 100%;
+}
+.dlg-suggest__chip-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 360px;
+}
+.dlg-suggest__chip-count {
+  background: var(--dlg-color-accent);
+  color: var(--dlg-color-primary-deep);
+  font-weight: 700;
+  padding: 0 6px;
+  border-radius: var(--dlg-radius-pill);
+  font-size: var(--dlg-fs-11);
+  flex-shrink: 0;
+}
+.dlg-suggest__chip:hover {
+  background: var(--dlg-color-accent);
+  color: var(--dlg-color-primary-deep);
+  border-color: var(--dlg-color-accent);
+  transform: translateY(-1px);
+}
+.dlg-suggest__chip:hover .dlg-suggest__chip-count {
+  background: var(--dlg-color-primary-deep);
+  color: var(--dlg-color-accent);
+}
+.dlg-suggest__empty {
+  width: 100%;
+  font-size: var(--dlg-fs-12);
+  color: var(--dlg-color-text-muted);
+  font-style: italic;
+  padding: 2px 0;
+}
+.dlg-suggest__more {
+  font-size: var(--dlg-fs-12);
+  color: var(--dlg-color-text-muted);
+  align-self: center;
+}
+
 .dlg-advanced {
   grid-column: 1 / -1;
   border-top: 1px dashed var(--dlg-color-border);

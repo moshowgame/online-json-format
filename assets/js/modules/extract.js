@@ -292,6 +292,54 @@ DLG.Extract = (function () {
     return function (scope) { return evalAst(ast, scope); };
   }
 
+  /* ============== 自動偵測路徑 ============== */
+  // 給定 JSON 字串和屬性名,找出所有該屬性出現的位置,
+  // 並把只差在數字下標的路徑聚合為 accounts[*].accountNumber 這種模板。
+  // 返回 { ok, paths: [{ path, count, samples }], total }
+  function discoverPaths(input, key) {
+    if (!input || !key || typeof key !== 'string') return { ok: true, paths: [], total: 0 };
+    key = key.trim();
+    if (!key) return { ok: true, paths: [], total: 0 };
+
+    var jsonParse = DLG.Json.parseSafe(input);
+    if (!jsonParse.ok) {
+      var loc = DLG.UI.locateError(input, jsonParse.error.position);
+      return { ok: false, error: { message: jsonParse.error.message, line: loc.line, column: loc.column, position: jsonParse.error.position } };
+    }
+    var data = jsonParse.data;
+
+    var found = [];
+    function walk(node, currentPath) {
+      if (node && typeof node === 'object' && !Array.isArray(node)) {
+        var keys = Object.keys(node);
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          var childPath = currentPath + '.' + k;
+          if (k === key) found.push({ path: childPath, value: node[k] });
+          walk(node[k], childPath);
+        }
+      } else if (Array.isArray(node)) {
+        for (var j = 0; j < node.length; j++) {
+          walk(node[j], currentPath + '[' + j + ']');
+        }
+      }
+    }
+    walk(data, '$');
+
+    var groups = new Map();
+    for (var g = 0; g < found.length; g++) {
+      var tpl = found[g].path.replace(/\[\d+\]/g, '[*]');
+      if (!groups.has(tpl)) groups.set(tpl, { path: tpl, count: 0, samples: [] });
+      var entry = groups.get(tpl);
+      entry.count++;
+      if (entry.samples.length < 3) entry.samples.push(found[g].value);
+    }
+    var result = [];
+    groups.forEach(function (v) { result.push(v); });
+    result.sort(function (a, b) { return b.count - a.count; });
+    return { ok: true, paths: result, total: found.length };
+  }
+
   /* ============== 公開 API ============== */
   function extract(input, spec) {
     spec = spec || {};
@@ -354,6 +402,7 @@ DLG.Extract = (function () {
   return {
     parsePath: parsePath,
     extract: extract,
+    discoverPaths: discoverPaths,
     compileCondition: compileCondition
   };
 })();

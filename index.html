@@ -182,8 +182,14 @@
         <div class="dlg-extract-panel" data-only-for-mode="extract" hidden>
           <div class="dlg-field">
             <label class="dlg-field__label">目標路徑 <span class="req">*</span></label>
-            <input class="dlg-input" id="ex-path" type="text" placeholder="例：accounts[*].accountNumber" autocomplete="off">
-            <div class="dlg-field__hint">支持 <code>a.b.c</code> 屬性、<code>a[*]</code> 數組展開、<code>a[0]</code> 索引、<code>a..b</code> 遞歸下降。</div>
+            <div class="dlg-input-wrap">
+              <input class="dlg-input" id="ex-path" type="text" placeholder="例：accounts[*].accountNumber，或直接輸入屬性名自動偵測" autocomplete="off">
+              <button class="dlg-input-suffix" id="ex-path-detect" type="button" aria-label="按屬性名查找路徑" title="按屬性名查找路徑">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+            <div class="dlg-suggest" id="ex-path-suggest" hidden></div>
+            <div class="dlg-field__hint">支持 <code>a.b.c</code> 屬性、<code>a[*]</code> 數組展開、<code>a[0]</code> 索引、<code>a..b</code> 遞歸下降；只輸入屬性名將自動掃描所有出現位置。</div>
           </div>
           <div class="dlg-field">
             <label class="dlg-field__label">過濾條件 <span style="color:var(--dlg-color-text-muted);font-weight:400">(可選)</span></label>
@@ -299,9 +305,10 @@
               <li>提取模式下可點擊行查看完整路徑與父對象詳情，支援複製 JSON 數組或下載 CSV。</li>
             </ol>
             <h3>版本更新
-                <span class="dlg-badge dlg-badge--accent">v2026.07 A</span>
+                <span class="dlg-badge dlg-badge--accent">v2026.07 B</span>
             </h3>
             <ul>
+              <li>v2026.07 B：提取模式新增<strong>屬性名自動偵測路徑</strong>，只輸入簡單屬性名即可看到所有出現位置並一鍵套用。</li>
               <li>v2026.07 A：新增 BSON 友好輸入模式，支持 Extended JSON、Hex、Base64 三種輸入模式，自動識別 BSON 特殊類型。</li>
             </ul>
           </div>

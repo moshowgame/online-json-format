@@ -213,6 +213,30 @@
   }
 
   /* ============== 提取 ============== */
+
+  // 把當前輸入(可能為 BSON)統一為標準 JSON,返回 { ok, text, error }
+  function toStandardJson(input) {
+    if (state.format !== 'bson') return { ok: true, text: input };
+    try {
+      var EJSON = window.BSON && window.BSON.EJSON;
+      if (!EJSON) return { ok: false, error: 'BSON 庫未載入' };
+      var parsed = EJSON.parse(input, { relaxed: false });
+      return { ok: true, text: EJSON.stringify(parsed, null, 2) };
+    } catch (e) {
+      return { ok: false, error: e.message };
+    }
+  }
+
+  // 判斷是否為「簡單屬性名」(不含路徑語法字符)
+  function isSimpleKey(s) {
+    if (!s) return false;
+    if (s.indexOf('.') >= 0) return false;
+    if (s.indexOf('[') >= 0) return false;
+    if (s.indexOf('*') >= 0) return false;
+    if (s.charAt(0) === '$') return false;
+    return /^[a-zA-Z_$][a-zA-Z0-9_$\-]*$/.test(s);
+  }
+
   function runExtract() {
     var input = $('#fmt-input').val();
     var path = $('#ex-path').val().trim();
@@ -225,20 +249,10 @@
     if (!input) { DLG.UI.toast({ kind: 'warning', message: '請先粘貼 JSON 數據' }); return; }
     if (!path)  { DLG.UI.toast({ kind: 'warning', message: '請輸入目標路徑' }); return; }
 
-    // BSON 模式時，把輸入解析為標準 JSON 後再提取
     var inputForExtract = input;
-    if (state.format === 'bson') {
-      try {
-        var EJSON = window.BSON && window.BSON.EJSON;
-        if (EJSON) {
-          var parsed = EJSON.parse(input, { relaxed: false });
-          inputForExtract = EJSON.stringify(parsed, null, 2);
-        }
-      } catch (e) {
-        DLG.UI.toast({ kind: 'danger', message: 'BSON 解析失敗：' + e.message });
-        return;
-      }
-    }
+    var std = toStandardJson(input);
+    if (!std.ok) { DLG.UI.toast({ kind: 'danger', message: 'BSON 解析失敗：' + std.error }); return; }
+    inputForExtract = std.text;
 
     var r = DLG.Extract.extract(inputForExtract, { path: path, condition: cond, scalarOnly: scalarOnly, distinct: distinct });
     var $out = $('#fmt-output');
@@ -533,6 +547,118 @@
     });
   }
 
+  /* ============== 路徑自動偵測 ============== */
+  var SUGGEST_LIMIT = 12;
+  var suggestTimer = null;
+  var suggestHideTimer = null;
+
+  function hideSuggest() {
+    $('#ex-path-suggest').attr('hidden', 'hidden').empty();
+    $('#ex-path-detect').removeClass('is-active');
+  }
+
+  function renderSuggest(result, key) {
+    var $box = $('#ex-path-suggest');
+    $box.empty();
+    if (!result.ok) {
+      $box.append('<div class="dlg-suggest__empty">JSON 解析失敗,無法查找（' + DLG.UI.escapeHtml(result.error.message) + '）</div>');
+      $box.removeAttr('hidden');
+      return;
+    }
+    if (result.total === 0) {
+      $box.append('<div class="dlg-suggest__empty">未在輸入中找到屬性 <code>' + DLG.UI.escapeHtml(key) + '</code></div>');
+      $box.removeAttr('hidden');
+      return;
+    }
+    var shown = result.paths.slice(0, SUGGEST_LIMIT);
+    var html = '<div class="dlg-suggest__label"><i class="bi bi-magic"></i> 偵測到 ' + result.total + ' 處「' + DLG.UI.escapeHtml(key) + '」,點擊套用路徑</div>';
+    shown.forEach(function (p) {
+      var sampleStr = '';
+      if (p.samples && p.samples.length) {
+        var first = p.samples[0];
+        var display = typeof first === 'string' ? '"' + first + '"' : JSON.stringify(first);
+        if (display.length > 24) display = display.slice(0, 22) + '…';
+        sampleStr = ' title="示例值: ' + DLG.UI.escapeHtml(display) + '"';
+      }
+      html += '<button type="button" class="dlg-suggest__chip" data-apply-path="' + DLG.UI.escapeHtml(p.path) + '"' + sampleStr + '>'
+        + '<span class="dlg-suggest__chip-path">' + DLG.UI.escapeHtml(p.path) + '</span>'
+        + '<span class="dlg-suggest__chip-count">× ' + p.count + '</span>'
+        + '</button>';
+    });
+    if (result.paths.length > SUGGEST_LIMIT) {
+      html += '<span class="dlg-suggest__more">… 還有 ' + (result.paths.length - SUGGEST_LIMIT) + ' 條</span>';
+    }
+    $box.html(html).removeAttr('hidden');
+  }
+
+  function runPathDetect() {
+    var key = $('#ex-path').val().trim();
+    var input = $('#fmt-input').val();
+    if (!input) { hideSuggest(); return; }
+    if (!isSimpleKey(key)) { hideSuggest(); return; }
+    var std = toStandardJson(input);
+    if (!std.ok) {
+      renderSuggest({ ok: false, error: { message: 'BSON 解析失敗: ' + std.error } }, key);
+      return;
+    }
+    var r = DLG.Extract.discoverPaths(std.text, key);
+    renderSuggest(r, key);
+  }
+
+  function bindPathSuggest() {
+    var $path = $('#ex-path');
+    var $btn = $('#ex-path-detect');
+    var $box = $('#ex-path-suggest');
+
+    $path.on('input', function () {
+      clearTimeout(suggestTimer);
+      var key = $path.val().trim();
+      if (!key || !isSimpleKey(key)) { hideSuggest(); return; }
+      suggestTimer = setTimeout(runPathDetect, 300);
+    });
+
+    $path.on('focus', function () {
+      var key = $path.val().trim();
+      if (key && isSimpleKey(key)) {
+        clearTimeout(suggestHideTimer);
+        runPathDetect();
+      }
+    });
+
+    $path.on('keydown', function (e) {
+      if (e.key === 'Escape') hideSuggest();
+    });
+
+    $btn.on('click', function (e) {
+      e.preventDefault();
+      if ($box.is(':visible') && $btn.hasClass('is-active')) { hideSuggest(); return; }
+      $btn.addClass('is-active');
+      runPathDetect();
+    });
+
+    $box.on('click', '.dlg-suggest__chip', function (e) {
+      e.preventDefault();
+      var p = $(this).data('apply-path');
+      if (!p) return;
+      $path.val(p).trigger('focus');
+      hideSuggest();
+    });
+
+    $path.on('blur', function () {
+      clearTimeout(suggestHideTimer);
+      suggestHideTimer = setTimeout(hideSuggest, 200);
+    });
+    $box.on('mousedown', function (e) {
+      e.preventDefault();
+    });
+
+    $(document).on('click.dlg-suggest', function (e) {
+      var $t = $(e.target);
+      if ($t.closest('#ex-path-suggest, #ex-path, #ex-path-detect').length) return;
+      hideSuggest();
+    });
+  }
+
   /* ============== 工具條綁定 ============== */
   function bindToolbar() {
     var $bar = $('#dlg-section-tool .dlg-tool__bar');
@@ -619,6 +745,7 @@
     bindOutputActions();
     bindGutters();
     bindToolbar();
+    bindPathSuggest();
     applyModeVisibility();
 
     var lastSpec = DLG.Storage.getLastSpec();
